@@ -1,0 +1,13 @@
+#Exclude some files
+
+#Files 
+*.pyc
+*ipynb
+data/variables(1).json
+data/chrome.exe
+data/chromedriver.exe
+data/chromedriver_win32.zip
+
+#Folders
+__pycache__/
+.ipynb_checkpoints/

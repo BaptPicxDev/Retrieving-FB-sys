@@ -1,0 +1,17 @@
+{
+	"chrome_path" : "", 
+	"chrome_webdriver_path" : "",
+	"facebook_id" : "", 
+	"facebook_pwd" : "",
+	"mongoDB" : {
+			"link" : "mongodb+srv://<user>:<password>@cluster0.f6bqv.mongodb.net/<dbname>?retryWrites=true&w=majority",
+			"database" : "training",
+			"id" : "",
+			"pwd" : "",
+			"collections" : {
+							"posts" : "jchirac-posts",
+							"comments" : "jchirac-comments" 
+							}
+				}
+}
+
