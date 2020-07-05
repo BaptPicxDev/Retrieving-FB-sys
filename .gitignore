@@ -3,7 +3,8 @@
 #Files 
 *.pyc
 *ipynb
-data/variables(1).json
+*.yml
+data/variables_ex.json
 data/chrome.exe
 data/chromedriver.exe
 data/chromedriver_win32.zip
