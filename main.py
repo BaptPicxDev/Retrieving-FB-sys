@@ -17,9 +17,10 @@ from selenium.webdriver.chrome.options import Options # Webdriver options
 
 # Modules 
 from accessDatabase import * 
+from elk import * 
 
 # Constants
-EXPORT = True
+EXPORT = False
 
 # Constants
 DATA_PATH = './data/variables_ex.json'
@@ -31,10 +32,11 @@ if __name__ == "__main__" :
 	db_posts = getCollection(db, variables["mongoDB"]["collections"]["posts"])
 	db_comments = getCollection(db, variables["mongoDB"]["collections"]["comments"])
 	if(EXPORT) :
-		deleteFile('db_comment.json')
-		deleteFile('db_comment.csv')
-		collectionToJson(db_comments, 'db_comment.json') 
-		fromJsonToCsv('db_comment.json')
+		deleteFile('db_comments.json')
+		deleteFile('db_comments.csv')
+		fromJsonToCsv('db_comments.json')
+		es = setUpESConnection()
+		createESIndex(es, list(db_posts.find({})))
 	else :
 		eraseCollection(db_posts)
 		eraseCollection(db_comments)
@@ -74,6 +76,11 @@ if __name__ == "__main__" :
 						for com in comments :
 							if(len(com.text)>10) :
 								print("Post number : ",index_post," / Comment number : ", cmpt)
+								try : 
+									com.find_element_by_xpath("//div[contains(text(), 'See More')]").click()
+									print("See More clicked")
+								except : 
+									print("Comment entirly loaded.")
 								com_username = com.text.split('\n')[0]
 								com_comment = com.text.split('\n')[1]
 								if(len(com_comment)>=10000) :
@@ -113,13 +120,15 @@ if __name__ == "__main__" :
 								pass
 						fillCollection(db_posts, n_posts)
 						fillCollection(db_comments, n_comments)
+						collectionToJson(db_posts, 'db_posts.json') 
+						collectionToJson(db_comments, 'db_comments.json') 
 						break
 					except Exception as exc_btn :
 						print("Can't load the data")
 						print(exc_btn)
 			else : 
 				print('No posts')
-			driver.close()
+			# driver.close()
 			print(n_posts)
 		except Exception as exc :
 			print("Error while logging")
